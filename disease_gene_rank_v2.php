@@ -26,7 +26,15 @@ $diseases = ['cancer','infection','alzheimer','cardiovascular','diabetes','obesi
 //ini_set('memory_limit', '134217728');
 ini_set('memory_limit','1G');
 
-    $query = 'SELECT aliases.* FROM aliases left join gene_disease on aliases.gene_id=gene_disease.gene_id where type = "NCBI_official_symbol" and LEN(aliases.name) > 3 and gene_disease.gene_id is null;'; //where gene_id between 1 and 5000
+
+$insert_db_table = 'gene_disease_copy';
+ $query = 'SELECT aliases.* FROM aliases left join '.$insert_db_table.' on aliases.gene_id='.$insert_db_table.'.gene_id where type = "NCBI_official_symbol" and '.$insert_db_table.'.gene_id is null';
+
+// and LENGTH(aliases.name) > 3 and aliases.name like "A%"
+
+    /*$query = 'SELECT aliases.* FROM aliases left join gene_disease_copy on aliases.gene_id=gene_disease_copy.gene_id where type = "NCBI_official_symbol" and LENGTH(aliases.name) > 3 and aliases.name like "A%" and gene_disease_copy.gene_id is null;';*/
+
+ //where gene_id between 1 and 5000
        //$result = $conn->query($query);
    
    $sth = $conn->prepare($query);
@@ -50,7 +58,7 @@ foreach($diseases as $disease){
         $ids[] = $row['name'];
 
         //ini_set('memory_limit', '-1');
-        $query2 = 'SELECT count(*) as publication_count FROM publications WHERE match(abstract) against("+'.str_replace("-", "",$row['name']).' +'.$disease.'" IN BOOLEAN MODE);';
+        $query2 = 'SELECT count(*) as publication_count FROM publications WHERE match(abstract) against("+'.str_replace(["-", "@"], ["", ""],$row['name']).' +'.$disease.'" IN BOOLEAN MODE);';
         //$result = $conn->query($query);
 
         $sth2 = $conn->prepare($query2);
@@ -58,7 +66,7 @@ foreach($diseases as $disease){
         /* Fetch all of the values in form of a numeric array */
         $result2 = $sth2->fetchAll();
 
-        $query3 = 'INSERT into gene_disease_copy (gene_id,alias_id,disease_type,publication_count) values ("'.$row['gene_id'].'",'.$row['id'].', "'.$disease.'", "'.$result2[0]['publication_count'].'")';
+        $query3 = 'INSERT into '.$insert_db_table.' (gene_id,alias_id,disease_type,publication_count) values ("'.$row['gene_id'].'",'.$row['id'].', "'.$disease.'", "'.$result2[0]['publication_count'].'")';
         //$result = $conn->query($query);
 
         $sth3 = $conn->prepare($query3);
