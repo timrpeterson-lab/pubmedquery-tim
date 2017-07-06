@@ -41,8 +41,8 @@ foreach($result as $row){
 
 echo 'foo2';
 
-    if($row['name'] == "WAS") continue;
-    
+    if($row['name'] == "WAS" || $row['name'] == "IMPACT" || $row['name'] == 'TRAP') continue;
+
     //ini_set('memory_limit', '-1');
     $query2 = 'SELECT pmid FROM publications WHERE match(abstract) against("+'.str_replace(["-", "@"], ["", ""],$row['name']).'" IN BOOLEAN MODE);';
     //$result = $conn->query($query);
