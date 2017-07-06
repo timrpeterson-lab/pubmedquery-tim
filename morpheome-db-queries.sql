@@ -1,4 +1,4 @@
-#
+#generate gene+cancer vs. gene+other disease publication counts
 select sum(a.publication_count) as cancer, b.other from gene_disease_copy a
 join (select gene_id, sum(publication_count) as other from gene_disease_copy where disease_type!='cancer' and publication_count > 0  group by gene_id having sum(publication_count) <100000) b
 on a.gene_id=b.gene_id
@@ -44,7 +44,7 @@ where type = "NCBI_official_symbol"
 group by aliases.gene_id 
  order by m.count desc;
 
-
+#this query, which is similar to the one above doesn't work when you do the JOIN with the gene2pubtator table. Perhaps gene2pubtator table needs an index?
 select * from aliases 
 join (select gene2pubtator.NCBI_Gene, count(gene2pubtator.NCBI_Gene) as count from gene2pubtator
 join (
