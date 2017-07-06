@@ -1,3 +1,4 @@
+#
 select sum(a.publication_count) as cancer, b.other from gene_disease_copy a
 join (select gene_id, sum(publication_count) as other from gene_disease_copy where disease_type!='cancer' and publication_count > 0  group by gene_id having sum(publication_count) <100000) b
 on a.gene_id=b.gene_id
