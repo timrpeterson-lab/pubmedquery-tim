@@ -23,8 +23,8 @@ ini_set('memory_limit','1G');
 echo 'foo';
 
 $insert_db_table = 'gene_paper_copy';
-$query = 'SELECT aliases.* FROM aliases left join '.$insert_db_table.' on aliases.gene_id='.$insert_db_table.'.gene_id left join aliases_orphans on aliases.id=aliases_orphans.id where aliases.type = "NCBI_official_symbol" and '.$insert_db_table.'.alias_id is null and aliases_orphans.id is null and LENGTH(aliases.name) > 3';
- 
+$query = 'SELECT aliases.* FROM aliases left join '.$insert_db_table.' on aliases.gene_id='.$insert_db_table.'.gene_id left join aliases_orphans on aliases.id=aliases_orphans.id where  '.$insert_db_table.'.alias_id is null and aliases_orphans.id is null and LENGTH(aliases.name) >= 3';
+ //aliases.type = "NCBI_official_symbol" and
 /*$query = 'SELECT aliases.* FROM aliases left join '.$insert_db_table.' on aliases.gene_id='.$insert_db_table.'.gene_id where aliases.type = "NCBI_official_symbol" and '.$insert_db_table.'.alias_id is null';*/
 
 $sth = $conn->prepare($query);
@@ -41,7 +41,9 @@ foreach($result as $row){
 
 echo 'foo2';
 
-    if($row['name'] == "WAS" || $row['name'] == "IMPACT" || $row['name'] == 'TRAP') continue;
+$arr_exclude = ['was',"impact",'trap','ighv(iii)6', "its", 'protease', 'polymerase'];
+
+    if(in_array(strtolower($row['name']), $arr_exclude)) continue;
 
     //ini_set('memory_limit', '-1');
     $query2 = 'SELECT pmid FROM publications WHERE match(abstract) against("+'.str_replace(["-", "@"], ["", ""],$row['name']).'" IN BOOLEAN MODE);';
