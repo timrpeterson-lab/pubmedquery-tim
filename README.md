@@ -12,7 +12,7 @@
 
 5. generate gene_paper pivot table `disease_paper.php`
 
-6. analyze data with MySQL. See this file for documentation on what each query does: `morpheome-db-queries.sql`
+6. analyze data with MySQL. The main issue with the data is that english words don't get recognized well. There are genes with official NCBI symbols like "MICE", "SET", "MET", and "COPD", that add noise to the returned results. Other genes like p53 have official symbols "TP53" that aren't as commonly used. The solution is manual curation. See this file for documentation on what each query does: `morpheome-db-queries.sql`
 
 7. Perhaps the most useful query for MORPHEOME for top-cited gene ranking is described below. It returns a ranked list of all the genes that co-occur with a given search term, in this example "osteoporosis". It is slow (can be 30s), so it needs optimization if it will be used on a website. Perhaps, we need a index on some of the JOINed tables?
 

@@ -1,3 +1,5 @@
+
+
 #generate gene+cancer vs. gene+other disease publication counts
 select sum(a.publication_count) as cancer, b.other from gene_disease_copy a
 join (select gene_id, sum(publication_count) as other from gene_disease_copy where disease_type!='cancer' and publication_count > 0  group by gene_id having sum(publication_count) <100000) b
@@ -29,7 +31,7 @@ left join `aliases`
 on gene_paper_copy.gene_id=aliases.gene_id
 group by gene_paper_copy.gene_id order by count desc;
 
-
+# this is perhaps the most useful query for MORPHEOME to find top-cited genes. It returns a ranked list of all the genes that co-occur with a given search term, in this example "osteoporosis".
 select * from aliases 
 join (select gene_paper_copy.gene_id, count(gene_paper_copy.gene_id) as count from gene_paper_copy
 join (
@@ -62,6 +64,7 @@ group by aliases.gene_id
 select count(*) from gene_paper_copy
 where gene_id=3845;
 
+# rank all genes by # of citations they are referenced (this is irrespective of disease or any other 2nd criteria)
 select * from aliases 
 join (select *, count(pmid) count from gene_paper_copy
 group by gene_id) c
