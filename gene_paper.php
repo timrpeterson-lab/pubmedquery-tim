@@ -4,6 +4,11 @@ $username = "root";
 $password = "";
 $db = "morpheome";
 
+$servername = "morpheome-rds.ckwefs6v2vcx.us-east-1.rds.amazonaws.com";
+$username = "morpheome";
+$password = "petersonlab";
+$db = "morpheomeDB";
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=".$db, $username, $password);
     // set the PDO error mode to exception
