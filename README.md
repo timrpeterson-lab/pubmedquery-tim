@@ -28,3 +28,5 @@ join (
 	group by aliases.gene_id 
 	order by m.count desc;
  ```
+
+ 8. Download a list of common queries from MeSH and put in csv using `mesh_xml2csv.php` (for easy import to MySQL) so we can pre-fetch results of top-cited-orphan gene pairs. Otherwise if each user had to run their query through all 28M papers and the rest of the pipeline, it would take forever. 
