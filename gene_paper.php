@@ -41,6 +41,8 @@ foreach($result as $row){
 
 echo 'foo2';
 
+
+
 $arr_exclude = ['was',"impact",'trap','ighv(iii)6', "its", 'protease', 'polymerase'];
 
     if(in_array(strtolower($row['name']), $arr_exclude)) continue;

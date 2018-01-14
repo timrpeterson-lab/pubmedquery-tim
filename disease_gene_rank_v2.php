@@ -49,6 +49,7 @@ $time_start = microtime(true);
 
 
 
+
  $ids = [];
 foreach($diseases as $disease){ 
 
@@ -58,6 +59,8 @@ foreach($diseases as $disease){
         $ids[] = $row['name'];
 
         //ini_set('memory_limit', '-1');
+
+        // searches PubMed for co-occurrence of gene name and disease name;
         $query2 = 'SELECT count(*) as publication_count FROM publications WHERE match(abstract) against("+'.str_replace(["-", "@"], ["", ""],$row['name']).' +'.$disease.'" IN BOOLEAN MODE);';
         //$result = $conn->query($query);
 
